@@ -1,27 +1,16 @@
 services:
-  audiobookshelf:
-    image: ghcr.io/advplyr/audiobookshelf:latest
+  env-viewer:
+    image: php:8-apache
     ports:
-      - 13378:80
-    volumes:
-      - audiobooks_data:/audiobooks
-      - podcasts_data:/podcasts
-      - config_data:/config
-      - metadata_data:/metadata
-    env_file:
-      - .env
+      - "8080:80"
     environment:
+      - APP_NAME=${APP_NAME}
+      - APP_ENV=${APP_ENV}
       - TZ=${TZ}
+      - DEBUG=${DEBUG}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - API_KEY=${API_KEY}
+      - ADMIN_TOKEN=${ADMIN_TOKEN}
+    volumes:
+      - ./index.php:/var/www/html/index.php:ro
     restart: unless-stopped
-    # healthcheck:
-    #   test: ['CMD-SHELL', 'curl -f http://127.0.0.1:13378 || exit 1']
-    #   interval: 1m
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 40s
-
-volumes:
-  audiobooks_data:
-  podcasts_data:
-  config_data:
-  metadata_data:
