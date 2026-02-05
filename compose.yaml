@@ -1,0 +1,27 @@
+services:
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    ports:
+      - 13378:80
+    volumes:
+      - audiobooks_data:/audiobooks
+      - podcasts_data:/podcasts
+      - config_data:/config
+      - metadata_data:/metadata
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+    restart: unless-stopped
+    # healthcheck:
+    #   test: ['CMD-SHELL', 'curl -f http://127.0.0.1:13378 || exit 1']
+    #   interval: 1m
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 40s
+
+volumes:
+  audiobooks_data:
+  podcasts_data:
+  config_data:
+  metadata_data:
